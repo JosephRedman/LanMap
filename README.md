@@ -22,15 +22,11 @@
 ## Installation  
 1. Clone the repository:  
    ```
-   git clone https://github.com/username/lanmap.git  
-   cd lanmap
+   git clone https://github.com/JosephRedman/LanMap.git
+   cd LanMap
    ```
 
-2. Install dependencies:
-   ```
-   pip install -r requirements.txt
-   ```
-3. Run the application:
+2. Run the application:
    ```
    python Main.py
    ```
