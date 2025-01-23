@@ -21,9 +21,11 @@
 
 ## Installation  
 1. Clone the repository:  
+
    ```
    git clone https://github.com/JosephRedman/LanMap.git
    cd LanMap
+
    ```
 
 2. Run the application:
