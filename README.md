@@ -9,7 +9,8 @@
 - Customize colors of nodes and connections using a color palette.  
 - Add and edit draggable text labels.  
 - Save and open maps using the built-in Windows file selector.  
-- View instructions via a dedicated "Help" window (press `SHIFT+H`).  
+- View instructions via a dedicated "Help" window (press `SHIFT+H`).
+- Sucky topology mapping using nmap (When installing check "Support raw 802.11 traffic (and monitor mode)" and "WinPcap API-compatible mode")
 
 ## Shortcuts  
 - `SHIFT+A`: Add a node to the map.  
@@ -17,16 +18,21 @@
 - `SHIFT+T`: Add a text label.  
 - `SHIFT+H`: Open the Help window.  
 - `CTRL+S`: Save the current map.  
-- `CTRL+O`: Open a saved map.  
+- `CTRL+O`: Open a saved map.
+- `SHIFT-S`: Map the network topology automatically
 
-## Installation  
+## Installation
+
 1. Clone the repository:  
    ```
    git clone https://github.com/JosephRedman/lanmap.git  
    cd lanmap
    ```
-
-2. Run the application:
+2. Install nmap:
+   ```
+   https://nmap.org/download.html
+   ```
+3. Run the application:
    ```
    python Main.py
    ```
