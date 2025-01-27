@@ -1,6 +1,8 @@
 import json
 import tkinter as tk
 from tkinter import simpledialog, colorchooser, filedialog
+import socket
+from scapy.all import ARP, Ether, srp
 
 Version = "0.1.5"
 Contributers = "Joseph Redman"
@@ -31,6 +33,8 @@ class LanMap:
         self.root.bind("<Control-s>", lambda e: self.save_map())
         self.root.bind("<Control-o>", lambda e: self.load_map())
         self.root.bind("<Shift-H>", self.open_help_window)
+        self.root.bind("<Shift-S>", self.scan_and_map)
+
 
 
 
@@ -40,6 +44,67 @@ class LanMap:
 
         # Bind to resize event
         self.canvas.bind("<Configure>", self.on_resize)
+
+    def get_local_ip(self):
+        return socket.gethostbyname(socket.gethostname())
+
+    def scan_network(self, ip_range="192.168.1.0/24"):
+        print(f"Scanning the network: {ip_range}")
+        devices = []
+
+        # Create an ARP request for the given IP range
+        arp_request = ARP(pdst=ip_range)
+        broadcast = Ether(dst="ff:ff:ff:ff:ff:ff")
+        packet = broadcast / arp_request
+
+        # Send the packet and capture responses
+        answered_list = srp(packet, timeout=2, verbose=False)[0]
+
+        for sent, received in answered_list:
+            devices.append({
+                "ip": received.psrc,
+                "mac": received.hwsrc
+            })
+
+        return devices
+
+    def infer_connections(self, devices):
+        local_ip = self.get_local_ip()
+        gateway = None
+
+            # Identify the gateway (default router)
+        for device in devices:
+            if device["ip"].startswith(local_ip.rsplit('.', 1)[0]):
+                gateway = device
+                break
+
+        return {
+            "gateway": gateway,
+            "devices": devices
+        }
+
+    def scan_and_map(self, event=None):
+        print("Scanning LAN...")
+        devices = self.scan_network()
+        connections = self.infer_connections(devices)
+
+        # Add gateway to the map
+        if connections["gateway"]:
+            self.add_node("Gateway", 300, 100)
+            gateway_id = self.node_id_counter - 1
+            print(f"Gateway found: {connections['gateway']}")
+
+         # Add other devices and connect them to the gateway
+        for device in connections["devices"]:
+            self.add_node("Device", 300, 300)
+            device_id = self.node_id_counter - 1
+
+            if connections["gateway"]:
+                self.create_connection(gateway_id, device_id)
+
+        print("LAN scanning and mapping completed!")
+    
+
 
     def on_resize(self, event):
         # Update positions relative to canvas size
