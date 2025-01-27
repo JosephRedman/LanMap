@@ -28,15 +28,22 @@
    git clone https://github.com/JosephRedman/lanmap.git  
    cd lanmap
    ```
-2. Install nmap:
+
+2. Install requirements:
+   ```
+   pip install -r requirements.txt
+   ```
+
+4. Install nmap:
    ```
    https://nmap.org/download.html
    ```
-3. Run the application:
+5. Run the application:
    ```
    python Main.py
    ```
-
+   If you have an error along the lines of: `RuntimeError: Sniffing and sending packets is not available at layer 2: winpcap is not installed. You may use conf.L3socket or conf.L3socket6 to access layer 3`, you should (re)install nmap.
+   
 ## TODO:
 
 - [ ] **Node Features**
